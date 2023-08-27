@@ -10,7 +10,8 @@
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
     "migrate:up": "knex migrate:up --knexfile src/db/knexfile.ts",
-    "migrate:down": "knex migrate:down --knexfile src/db/knexfile.ts"
+    "migrate:down": "knex migrate:down --knexfile src/db/knexfile.ts",
+    "seed": "knex seed:run --knexfile src/db/knexfile.ts"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
