@@ -20,7 +20,7 @@ export async function up(knex: Knex): Promise<void> {
         t.increments('id').primary();
         t.string('name', 255).notNullable();
         t.string('description', 255);
-        t.integer('brand_id').unsigned();
+        t.integer('brand_id').unsigned().notNullable();
         t.foreign('brand_id').references('brand.id');
         t.timestamps(true, true);
       });
