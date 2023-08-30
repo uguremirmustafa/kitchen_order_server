@@ -6,7 +6,7 @@ import passport from 'passport';
 
 const router = express.Router();
 
-router.get('/login', passport.authenticate('local'), (req, res) => {
+router.post('/login', passport.authenticate('local'), (req, res) => {
   res.json({ message: 'Login successful', data: req.user });
 });
 
@@ -40,7 +40,7 @@ router.post('/logout', isAuth, async (req, res, next) => {
     if (err) {
       return next(err);
     }
-    res.status(200).json({ message: 'logged out' });
+    res.status(200).json({ message: 'logged out', data: true });
   });
 });
 
