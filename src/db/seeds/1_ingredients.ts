@@ -19,6 +19,7 @@ export async function seed(knex: Knex): Promise<void> {
     { id: 8, name: 'Coca Cola' },
     { id: 9, name: 'Fiskobirlik' },
     { id: 10, name: 'İçim' },
+    { id: 11, name: 'Tamek' },
   ]);
   // we are setting the id_seq of the table manually for later inserts
   await knex.raw("select setval('brand_id_seq', max(id)) from brand");
@@ -32,6 +33,10 @@ export async function seed(knex: Knex): Promise<void> {
     { id: 6, name: 'Çay', brand_id: 3 },
     { id: 7, name: 'Kıyma', brand_id: 1 },
     { id: 8, name: 'Peynir', brand_id: 10 },
+    { id: 9, name: 'Penne makarna', brand_id: 7 },
+    { id: 10, name: 'Yemeklik krema', brand_id: 10 },
+    { id: 11, name: 'Domates salcasi', brand_id: 11 },
+    { id: 12, name: 'Sogan', brand_id: 1 },
   ]);
   // we are setting the id_seq of the table manually for later inserts
   await knex.raw("select setval('ingredient_id_seq', max(id)) from ingredient");

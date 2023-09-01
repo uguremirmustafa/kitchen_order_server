@@ -10,6 +10,7 @@ import passport from '@services/auth/passport';
 import authRoutes from '@routes/auth.route';
 import brandRoutes from '@routes/brand.route';
 import ingredientRoutes from '@routes/ingredient.route';
+import recipeRoutes from '@routes/recipe.route';
 
 const app = express();
 // middlewares
@@ -26,6 +27,7 @@ app.get('/api/welcome', (req, res) => res.json(process.env));
 app.use('/api/auth', authRoutes);
 app.use('/api/brand', brandRoutes);
 app.use('/api/ingredient', ingredientRoutes);
+app.use('/api/recipe', recipeRoutes);
 
 app.listen(appConfig.PORT, () => {
   console.log(`listening on ${appConfig.PORT}`);
