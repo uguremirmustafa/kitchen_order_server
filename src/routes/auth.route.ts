@@ -32,7 +32,7 @@ router.post(
 );
 
 router.get('/profile', isAuth, async (req, res) => {
-  res.status(200).json(req.user);
+  res.status(200).json({ data: req.user });
 });
 
 router.post('/logout', isAuth, async (req, res, next) => {
