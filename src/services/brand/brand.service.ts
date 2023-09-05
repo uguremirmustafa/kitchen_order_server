@@ -1,11 +1,6 @@
 import db from '@db/db';
 import { Brand } from '@models/brand';
 
-interface Credientials {
-  password: string;
-  email: string;
-}
-
 export async function getAll(): Promise<Brand[]> {
   const brands = await getBrandNames();
   return brands ?? [];

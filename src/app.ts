@@ -11,6 +11,7 @@ import authRoutes from '@routes/auth.route';
 import brandRoutes from '@routes/brand.route';
 import ingredientRoutes from '@routes/ingredient.route';
 import recipeRoutes from '@routes/recipe.route';
+import unitRoutes from '@routes/units.route';
 
 const app = express();
 // middlewares
@@ -28,6 +29,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/brand', brandRoutes);
 app.use('/api/ingredient', ingredientRoutes);
 app.use('/api/recipe', recipeRoutes);
+app.use('/api/unit', unitRoutes);
 
 app.listen(appConfig.PORT, () => {
   console.log(`listening on ${appConfig.PORT}`);
