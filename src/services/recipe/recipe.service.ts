@@ -13,7 +13,7 @@ export async function getOne(id: Recipe['id']) {
 }
 
 export async function getRecipes() {
-  return db<Recipe>('recipe').select('*');
+  return db<Recipe>('recipe').select('*').orderBy('id', 'asc');
 }
 
 export async function getRecipeById(id: Recipe['id']) {
@@ -38,7 +38,7 @@ export async function getRecipeDetailsById(id: Recipe['id']) {
             'ingredientName', i.name,
             'unit_id', u.id,
             'ingredient_id', i.id
-          )
+          ) ORDER BY ri.id ASC
         ) FILTER (WHERE ri.amount IS NOT NULL AND u.description IS NOT NULL AND b.name IS NOT NULL AND i.name IS NOT NULL) AS ingredients
       `)
     )

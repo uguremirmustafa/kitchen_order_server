@@ -15,6 +15,7 @@ export type IngredientWithBrandName = {
   ingredientId: Ingredient['id'];
   ingredientName: Ingredient['name'];
   brandName: Brand['name'];
+  brandId: Brand['id'];
 };
 
 export async function getIngredientsWithBrandName(): Promise<IngredientWithBrandName[]> {
@@ -23,7 +24,8 @@ export async function getIngredientsWithBrandName(): Promise<IngredientWithBrand
     .select(
       'ingredient.id as ingredientId',
       'ingredient.name as ingredientName',
-      'brand.name as brandName'
+      'brand.name as brandName',
+      'brand.id as brandId'
     );
 }
 
