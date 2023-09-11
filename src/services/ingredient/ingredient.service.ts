@@ -8,7 +8,7 @@ export async function getAll() {
 }
 
 export async function getIngredientNames() {
-  return db.select({ id: 'id', name: 'name' }).from<Ingredient>('ingredient');
+  return db.select({ id: 'id', name: 'name' }).from<Ingredient>('ingredient').orderBy('id', 'desc');
 }
 
 export type IngredientWithBrandName = {
@@ -26,7 +26,8 @@ export async function getIngredientsWithBrandName(): Promise<IngredientWithBrand
       'ingredient.name as ingredientName',
       'brand.name as brandName',
       'brand.id as brandId'
-    );
+    )
+    .orderBy('ingredient.id', 'desc');
 }
 
 export async function createOne(data: Partial<Omit<Ingredient, 'id'>>): Promise<Ingredient | null> {
