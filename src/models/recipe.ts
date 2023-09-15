@@ -5,6 +5,11 @@ export type Recipe = {
   id: number;
   name: string;
   description?: string;
+  image?: string;
+  users_id?: number;
+  for_x_person?: number;
+  prep_time?: number;
+  cooking_time?: number;
 };
 
 export type RecipeIngredient = {

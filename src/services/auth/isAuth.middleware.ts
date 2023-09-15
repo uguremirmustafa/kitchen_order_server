@@ -1,7 +1,9 @@
+import { User } from '@models/user';
 import { Request, Response, NextFunction } from 'express';
 
 const isAuth = (req: Request, res: Response, next: NextFunction) => {
-  if (req.user) {
+  const user = req.user as User;
+  if (user) {
     return next();
   }
 

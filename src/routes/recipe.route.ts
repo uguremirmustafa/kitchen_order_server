@@ -1,3 +1,4 @@
+import { User } from '@models/user';
 import isAuth from '@services/auth/isAuth.middleware';
 import { createOne, deleteOne, getAll, getOne, updateOne } from '@services/recipe/recipe.service';
 import express from 'express';
@@ -6,7 +7,8 @@ import { body, param, query, validationResult } from 'express-validator';
 const router = express.Router();
 
 router.get('/', isAuth, async (req, res) => {
-  const data = await getAll();
+  const user = req.user as User;
+  const data = await getAll(user);
   res.json({ data });
 });
 router.get('/:id', isAuth, param('id').isNumeric(), async (req, res) => {
@@ -36,7 +38,9 @@ router.post(
     if (!result.isEmpty()) {
       return res.json(result.array());
     }
-    const data = await createOne(req.body);
+    const user = req.user as User;
+
+    const data = await createOne(req.body, user);
     if (!data) {
       return res.status(400).json({ message: 'sth went wrong' });
     }

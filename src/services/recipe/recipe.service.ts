@@ -2,9 +2,10 @@ import db from '@db/db';
 import { Brand } from '@models/brand';
 import { Ingredient } from '@models/ingredient';
 import { Recipe, RecipeIngredient } from '@models/recipe';
+import { User } from '@models/user';
 
-export async function getAll() {
-  const items = await getRecipes();
+export async function getAll(user: User) {
+  const items = await getRecipesOfUser(user);
   return items ?? [];
 }
 export async function getOne(id: Recipe['id']) {
@@ -15,10 +16,13 @@ export async function getOne(id: Recipe['id']) {
 export async function getRecipes() {
   return db<Recipe>('recipe').select('*').orderBy('id', 'asc');
 }
+export async function getRecipesOfUser(user: User) {
+  return db<Recipe>('recipe').select('*').where('users_id', user.id).orderBy('id', 'asc');
+}
 
 export async function getRecipeById(id: Recipe['id']) {
   return db<Recipe>('recipe')
-    .select('recipe.id', 'recipe.name', 'recipe.description')
+    .select('recipe.id', 'recipe.name', 'recipe.description', 'recipe.image')
     .where('recipe.id', id)
     .first();
 }
@@ -29,6 +33,10 @@ export async function getRecipeDetailsById(id: Recipe['id']) {
       'r.id',
       'r.name',
       'r.description',
+      'r.image',
+      'r.cooking_time',
+      'r.for_x_person',
+      'r.prep_time',
       db.raw(`
         json_agg(
           jsonb_build_object(
@@ -52,19 +60,22 @@ export async function getRecipeDetailsById(id: Recipe['id']) {
     .first();
 }
 
-export type RecipeAndIngredients = {
-  name: string;
-  description?: string;
+export type RecipeAndIngredients = Recipe & {
   ingredients: Omit<RecipeIngredient, 'id' | 'recipe_id'>[];
 };
 
-export async function createOne(data: RecipeAndIngredients) {
+export async function createOne(data: RecipeAndIngredients, user: User) {
   const result = await db.transaction(async (trx) => {
     try {
       const [recipeId] = await trx<Recipe>('recipe')
         .insert({
           name: data.name,
-          description: data.description,
+          description: data?.description,
+          users_id: user.id,
+          image: data?.image,
+          cooking_time: data.cooking_time,
+          for_x_person: data.for_x_person,
+          prep_time: data.prep_time,
         })
         .returning('id');
       const insertPromises = data.ingredients.map((i) =>
@@ -92,6 +103,10 @@ export async function updateOne(recipeId: number, data: RecipeAndIngredients) {
       await trx<Recipe>('recipe').where('id', recipeId).update({
         name: data.name,
         description: data.description,
+        image: data.image,
+        cooking_time: data.cooking_time,
+        for_x_person: data.for_x_person,
+        prep_time: data.prep_time,
       });
 
       // Delete existing recipe ingredients

@@ -93,18 +93,6 @@ export async function seed(knex: Knex): Promise<void> {
       description:
         'Hazir krema ve penne makarna ile yapilmis harika bir lezzet. Kolay ve doyurucu.',
     },
-    {
-      id: 2,
-      name: 'Körili tavuk',
-      description:
-        'Hem doyurucu hem leziz. Tavuk filetoyu hem dogramak kolay hem de pismesini beklemek.',
-    },
-    {
-      id: 3,
-      name: 'Taze fasulye',
-      description:
-        'Akdeniz mutfagini vazgecilmezi, domatesle ayse kadin fasulyenin harika karisimi.',
-    },
   ]);
 
   await knex.raw("select setval('recipe_id_seq', max(id)) from recipe");
