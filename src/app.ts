@@ -3,26 +3,25 @@ dotenv.config({ path: '../.env' });
 import express from 'express';
 import cors from 'cors';
 import path from 'path';
-import { appConfig } from '@config/appConfig';
 import bodyParser from 'body-parser';
-import sessionConfig from '@config/sessionConfig';
-import passport from '@services/auth/passport';
+import sessionConfig, { redisClient } from '@/config/sessionConfig';
+import passport from '@/api/auth/passport';
+import * as middlewares from '@/lib/middlewares/middlewares';
+import corsConfig from '@/config/corsConfig';
 // route imports
-import authRoutes from '@routes/auth.route';
-import brandRoutes from '@routes/brand.route';
-import ingredientRoutes from '@routes/ingredient.route';
-import recipeRoutes from '@routes/recipe.route';
-import unitRoutes from '@routes/units.route';
-import foodCategoryRoutes from '@routes/food-category.route';
-import imageRoutes from '@routes/image.route';
+import authRoutes from '@/api/auth/auth.routes';
+import ingredientRoutes from '@/api/ingredient/ingredient.routes';
+import recipeRoutes from '@/api/recipe/recipe.routes';
+import foodCategoryRoutes from '@/api/food_category/food_category.routes';
+import unitRoutes from '@/api/unit/unit.routes';
+import imageRoutes from '@/api/image/image.routes';
 
 const app = express();
 // middlewares
 const jsonParser = bodyParser.json();
-app.use(
-  cors({ origin: 'http://localhost:5173', credentials: true, exposedHeaders: ['set-cookie'] })
-);
+app.use(cors(corsConfig));
 app.use(jsonParser);
+
 app.use(sessionConfig);
 app.use(passport.initialize());
 app.use(passport.session());
@@ -30,13 +29,13 @@ app.use(passport.session());
 app.get('/api/welcome', (req, res) => res.json(process.env));
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 app.use('/api/auth', authRoutes);
-app.use('/api/brand', brandRoutes);
 app.use('/api/ingredient', ingredientRoutes);
 app.use('/api/recipe', recipeRoutes);
 app.use('/api/unit', unitRoutes);
 app.use('/api/food-category', foodCategoryRoutes);
 app.use('/api/image', imageRoutes);
 
-app.listen(appConfig.PORT, () => {
-  console.log(`listening on ${appConfig.PORT}`);
-});
+app.use(middlewares.notFound);
+app.use(middlewares.errorHandler);
+
+export default app;

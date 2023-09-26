@@ -48,6 +48,8 @@ services:
       - pgadmin-data:/var/lib/pgadmin
     networks:
       - webnet
+    logging:
+      driver: none
 volumes:
   pgdata: {}
   pgadmin-data: {}

@@ -3,13 +3,14 @@ import { appConfig } from './appConfig';
 import RedisStore from 'connect-redis';
 import { createClient } from 'redis';
 
-const redisClient = createClient({
+import mockRedis from 'redis-mock';
+
+export const redisClient = createClient({
   url: appConfig.REDIS_URL,
 });
-redisClient.connect().catch(console.error);
 
 const redisStore = new RedisStore({
-  client: redisClient,
+  client: appConfig.NODE_ENV === 'test' ? mockRedis.createClient() : redisClient,
 });
 
 const sessionConfig = session({
